@@ -1,0 +1,32 @@
+.layout-aside-menu {
+  .el-menu-item {
+    &:hover {
+      background-color: #0c2135;
+    }
+  }
+  .el-menu-item.is-active {
+    &:before {
+      background: $--primary-color;
+      border-radius: 3px;
+      bottom: 0;
+      clear: both;
+      content: "";
+      left: 8px;
+      position: absolute;
+      right: 8px;
+      top: 0;
+      margin: 4px 0;
+      box-sizing: inherit;
+    }
+  }
+  .is-opened {
+    .dark {
+      .el-menu {
+        background-color: #999999 !important;
+      }
+    }
+    .el-menu {
+      background-color: #0c2135;
+    }
+  }
+}

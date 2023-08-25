@@ -1,0 +1,89 @@
+import { isObject } from "@/utils/is";
+
+export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
+  let key: string;
+  for (key in target) {
+    src[key] = isObject(src[key]) ? deepMerge(src[key], target[key]) : (src[key] = target[key]);
+  }
+  return src;
+}
+
+/**
+ * 将对象作为参数添加到URL
+ * @param baseUrl url
+ * @param obj
+ * @returns {string}
+ */
+export function setObjToUrlParams(baseUrl: string, obj: any): string {
+  let parameters = '';
+  for (const key in obj) {
+    parameters += key + '=' + encodeURIComponent(obj[key]) + '&';
+  }
+  parameters = parameters.replace(/&$/, '');
+  return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters;
+}
+
+/**
+ * 格式化时间
+ * 调用formatDate(strDate, 'yyyy-MM-dd');
+ * @param strDate（中国标准时间、时间戳等）
+ * @param strFormat（返回格式）
+ */
+export function dateFormat(strDate: any, strFormat?: any) {
+  if (!strDate) {
+    return;
+  }
+  if (!strFormat) {
+    strFormat = 'yyyy-MM-dd';
+  }
+  switch (typeof strDate) {
+    case 'string':
+      strDate = new Date(strDate.replace(/-/, '/'));
+      break;
+    case 'number':
+      strDate = new Date(strDate);
+      break;
+  }
+  if (strDate instanceof Date) {
+    const dict: any = {
+      yyyy: strDate.getFullYear(),
+      M: strDate.getMonth() + 1,
+      d: strDate.getDate(),
+      H: strDate.getHours(),
+      m: strDate.getMinutes(),
+      s: strDate.getSeconds(),
+      MM: ('' + (strDate.getMonth() + 101)).substring(1),
+      dd: ('' + (strDate.getDate() + 100)).substring(1),
+      HH: ('' + (strDate.getHours() + 100)).substring(1),
+      mm: ('' + (strDate.getMinutes() + 100)).substring(1),
+      ss: ('' + (strDate.getSeconds() + 100)).substring(1),
+    };
+    return strFormat.replace(/(yyyy|MM?|dd?|HH?|mm?|ss?)/g, function () {
+      return dict[arguments[0]];
+    });
+  }
+}
+
+// 二进制数据转base64
+export function blobToDataURI(blob: Blob, callback: Function) {
+  const reader = new FileReader();
+  reader.readAsDataURL(blob);
+  reader.onload = function (e) {
+    if (e?.target?.result) {
+      callback(e.target.result);
+    }
+  }
+}
+
+/**
+ * 生成随机len位数字
+ */
+export function randomLenNum(len: number = 10, date: boolean = false) {
+  let random = "";
+  random = Math.ceil(Math.random() * 100000000000000)
+    .toString()
+    .substr(0, len || 4);
+  if (date) random = random + Date.now();
+  return random;
+}
+
