@@ -44,16 +44,16 @@
       v-bind="col.props"
       v-if="col.type === 'date' && !col.component"
     />
-    <!--插槽-->
-    <slot v-if="col.slot && !col.component" :name="col.prop">
-      <el-input
+    <!--数字框-->
+    <el-input-number
         v-model="val"
-        class="w-full"
         :disabled="disabled"
-        :placeholder="`请输入 ${col.label}`"
+        style="width: 100%"
+        :placeholder="`请选择 ${col.label}`"
         v-bind="col.props"
-      ></el-input>
-    </slot>
+        v-if="col.type === 'number' && !col.component"
+    />
+
   </el-form-item>
 </template>
 

@@ -3,11 +3,10 @@
     <el-pagination
       v-model:current-page="currentPage"
       v-model:page-size="pageSize"
-      class=" overflow-x-auto"
       :page-sizes="pageSizes"
       :small="false"
       :background="background"
-      :layout="getLayout"
+      layout="total, sizes, prev, pager, next, jumper"
       :total="getTotal"
       v-bind="attrs"
       @size-change="sizeChange"
@@ -20,13 +19,11 @@
 import { PaginationProps } from "element-plus";
 import { computed, reactive, toRefs } from "vue";
 import { isNumber } from "@/utils/is";
-import { useLayoutStore } from "@/store/modules/layout";
 
 const props = defineProps<{
   pagination: PaginationProps
 }>()
 const emits = defineEmits(['size-change', 'current-change'])
-const layoutStore = useLayoutStore()
 const pagination = reactive(props.pagination)
 const {
   currentPage = 1,
@@ -41,9 +38,6 @@ const {
 
 const getTotal = computed(() => {
   return isNumber(total?.value) ? total?.value : Number(total?.value)
-})
-const getLayout = computed(() => {
-  return layoutStore.layoutWidth > 400 ? 'total, sizes, prev, pager, next, jumper' : 'total, prev, pager, next'
 })
 function sizeChange () {
   emits('size-change')

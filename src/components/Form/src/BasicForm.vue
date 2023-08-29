@@ -12,17 +12,27 @@
       <el-row class="flex flex-row flex-wrap" :gutter="20">
         <el-col
           v-for="col in getFormRenderColumn"
-          :key="getFormItemKey"
+          :key="getFormItemKey(col)"
           :span="col.span"
           :style="getFormItemStyle(col)"
         >
+          <el-form-item
+            v-if="col.slot"
+            :label="col.label"
+            :prop="col.prop"
+            :label-width="col.labelWidth || getFormOption.labelWidth"
+          >
+            <slot :name="col.prop"></slot>
+          </el-form-item>
           <BasicFormItem
             v-model="formData[col.prop]"
+            v-else
             :col="col"
             :options="getFormOption"
             :formData="formData"
             :disabled="isDisabled"
-          ></BasicFormItem>
+          >
+          </BasicFormItem>
         </el-col>
         <slot name="menu">
           <el-col> </el-col>
@@ -45,7 +55,6 @@ import {
 } from "@/components/Form/src/util";
 import { isEmpty } from "@/utils/is";
 import BasicFormItem from "@/components/Form/src/BasicFormItem.vue";
-import { useDict } from "@/hook/useDict";
 const props = defineProps<{
   modelValue: Recordable;
   option: Partial<BasicFormOption>;

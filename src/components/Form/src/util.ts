@@ -6,6 +6,8 @@ import {
 import { isArray, isNumber, isObject, isString } from "@/utils/is";
 import { computed } from "vue";
 import { FormRules } from "element-plus";
+import { getEffectiveValue } from "@/utils/transform";
+import { getValueType } from "@/utils/util";
 
 // 设置表单数据对象默认数据
 export function getFormDefault(
@@ -18,10 +20,18 @@ export function getFormDefault(
   if (Array.isArray(column)) {
     column.forEach((col) => {
       if (isString(col.prop) || isNumber(col.prop)) {
-        data[col.prop] = TransformByBataType(
-          formData[col.prop] || col.defaultValue || defaultValue,
-          col.dataType
-        );
+        // 获取有效值
+        const propValue = getEffectiveValue([
+          formData[col.prop],
+          col.defaultValue,
+          defaultValue,
+        ]);
+        data[col.prop] = col.dataType
+          ? TransformByBataType(
+            propValue,
+            col.dataType || getValueType(propValue)
+          )
+          : propValue;
       }
     });
   }
@@ -34,16 +44,18 @@ export function TransformByBataType(
   dataType: BasicFormDataType = "string"
 ) {
   switch (dataType) {
-    case "string":
-      return value.toString();
-    case "number":
-      return Number(value);
-    case "boolean":
-      return !!value;
-    case "array":
-      return isArray(value) ? value : [];
-    case "object":
+  case "string":
+    return value ? value.toString() : value;
+  case "number":
+    return Number(value);
+  case "boolean":
+    return !!value;
+  case "object":
+    if (isArray(value)) {
+      return value || [];
+    } else {
       return isObject(value) ? value : {};
+    }
   }
 }
 
@@ -71,13 +83,13 @@ export function getDefaultColumn(
 ): BasicFormColumnProps[] {
   return isArray(column)
     ? column.map((col) => {
-        return {
-          type: "text",
-          span: 12,
-          display: true,
-          ...col,
-        };
-      })
+      return {
+        type: "text",
+        span: 12,
+        display: true,
+        ...col,
+      };
+    })
     : [];
 }
 
@@ -91,12 +103,14 @@ export function getFormRule(column: BasicFormColumnProps[] = []): FormRules {
   return rules;
 }
 export const getFormItemKey = computed(() => {
-  return new Date().getTime().toString();
+  return (col: BasicFormColumnProps) => {
+    return col.prop + col.label;
+  };
 });
 
-export function getFormItemStyle (col: BasicFormColumnProps) {
+export function getFormItemStyle(col: BasicFormColumnProps) {
   return {
     minWidth: col.minWidth,
-    maxWidth: col.maxWidth
-  }
+    maxWidth: col.maxWidth,
+  };
 }

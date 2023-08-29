@@ -96,12 +96,11 @@ import { UserLoginProps } from "@/layout/login/types";
 import { useUserStore } from "@/store/modules/user";
 import { useMessage } from "@/hook/useMessage";
 import systemSettings from "@/config/system";
-const { getSystemConfig } = useSettingStore();
 const router = useRouter();
 const loginRef = ref<FormInstance>()
 const {message} = useMessage()
 const loginFormData = reactive<UserLoginProps>({
-  username: "cdxh",
+  username: "admin",
   password: "111",
   code: "",
   stationList: [],

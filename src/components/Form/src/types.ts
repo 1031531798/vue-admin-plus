@@ -6,7 +6,7 @@ export type BasicFormOption = {
   labelSuffix: string;
   disabled: boolean;
   inline: boolean;
-  column: BasicFormColumnProps[]
+  column: BasicFormColumnProps[];
 };
 export type BasicFormColumnProps = {
   label: string;
@@ -14,7 +14,7 @@ export type BasicFormColumnProps = {
   labelWidth?: string | number;
   type?: "text" | "number" | "select" | "date";
   formatter?: (value: Recordable) => string;
-  dataType?: BasicFormDataType
+  dataType?: BasicFormDataType;
   span?: number;
   slot?: boolean;
   props?: Recordable;
@@ -22,16 +22,24 @@ export type BasicFormColumnProps = {
   display?: boolean;
   dictData?: Recordable[];
   dictUrl?: string;
-  dictMethod?: 'get' | 'post';
-  dictQuery?: {data: Recordable, params: Recordable},
+  dictMethod?: "get" | "post";
+  dictQuery?: { data: Recordable; params: Recordable };
   defaultValue?: string | number;
   component?: string;
   maxWidth?: string;
   minWidth?: string;
-}
+};
 
 // 数据类型值
-export type BasicFormDataType = 'string' | 'number' | 'boolean' | 'array' | 'object'
+export type BasicFormDataType =
+  | "string"
+  | "number"
+  | "bigint"
+  | "boolean"
+  | "symbol"
+  | "undefined"
+  | "object"
+  | "function";
 
 // 表单组件事件
 export type BasicFormMethods = {
@@ -39,11 +47,11 @@ export type BasicFormMethods = {
   resetForm: VoidFunction;
   submitForm: () => Promise<any>;
   clearValidate: VoidFunction;
-}
+};
 
 // 搜索框组件事件
 export type SearchFormMethods = {
   getData: () => Recordable;
   reset: VoidFunction;
   search: VoidFunction;
-}
+};

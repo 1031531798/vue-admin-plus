@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    class="basic-dialog"
     v-model="dialogVisible"
     :title="title"
     v-bind="attrs"
@@ -17,11 +18,7 @@
       <slot name="footer">
         <span class="dialog-footer">
           <el-button @click="hideDialog">取消</el-button>
-          <el-button
-            :loading="getDisabled"
-            type="primary"
-            @click="handleConfirm"
-          >
+          <el-button :loading="getDisabled" type="primary" @click="handleConfirm">
             确定
           </el-button>
         </span>
@@ -38,19 +35,19 @@ import { DialogProps } from "element-plus";
 interface BasicDialogProps extends Partial<DialogProps> {
   loading?: boolean;
   showFooter?: boolean;
-  title: string;
-  minWidth?: string;
+  title: string
+  minWidth?: string
 }
 const props = defineProps<BasicDialogProps>();
-const attrs = useAttrs();
-const emits = defineEmits(["submit"]);
+const attrs = useAttrs()
+const emits = defineEmits(['submit'])
 const slots = useSlots();
 const dialogVisible = ref<boolean>(false);
 const getDisabled = computed(() => {
-  return props.loading;
-});
-function handleConfirm() {
-  emits("submit");
+  return props.loading
+})
+function handleConfirm () {
+  emits('submit')
 }
 function handleClose() {
   hideDialog();
@@ -67,4 +64,7 @@ defineExpose<BasicDialogMethods>({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.basic-dialog {
+}
+</style>

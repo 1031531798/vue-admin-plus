@@ -1,8 +1,8 @@
-import { isMobile } from "@/utils/is";
+import {isMobile, isNullOrUnDef} from "@/utils/is";
 
 // 表单校验 方法
 export function validateMobile (rule: any, value: any, callback: any) {
-  if (value === '') {
+  if (value === '' || isNullOrUnDef(value)) {
     callback()
   } else {
     if (!isMobile(value)) {

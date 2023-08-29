@@ -1,6 +1,9 @@
 <template>
-  <el-card class="flex flex-row p-2 mb-2" style="overflow-x: auto" body-style="width: 100%">
+  <el-card class="flex flex-row p-2 mb-2" body-style="width: 100%">
     <BasicForm ref="formRef" v-model="searchData" :option="option">
+      <template v-for="item in getSlots" v-slot:[item]>
+        <slot :name="item"> </slot>
+      </template>
       <template #menu>
         <div class="flex flex-row justify-end items-start ml-4">
           <slot name="footer">
@@ -26,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref, useSlots } from "vue";
 import { BasicFormMethods, BasicFormOption } from "@/components/Form/src/types";
 import BasicForm from "@/components/Form/src/BasicForm.vue";
 import Icon from "@/components/Icon/src/Icon.vue";
@@ -36,19 +39,22 @@ const props = defineProps<{
   modelValue: Recordable;
   option: Partial<BasicFormOption>;
 }>();
-const formRef = ref<BasicFormMethods>()
-const emits = defineEmits(['update:modelValue', 'search'])
-const searchData = useVModel(props, 'modelValue', emits)
+const formRef = ref<BasicFormMethods>();
+const emits = defineEmits(["update:modelValue", "search"]);
+const searchData = useVModel(props, "modelValue", emits);
+const slots = useSlots();
+const getSlots = computed(() => {
+  return Object.keys(slots);
+});
 // 搜索
-function handleSearch () {
-  emits('search', searchData.value)
+function handleSearch() {
+  emits("search", searchData.value);
 }
 // 重置
-function handleReset () {
-  formRef.value?.resetForm()
+function handleReset() {
+  formRef.value?.resetForm();
+  searchData.value = {};
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
