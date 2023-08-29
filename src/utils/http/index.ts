@@ -123,8 +123,6 @@ const transform: AxiosTransform = {
    * @description: 请求拦截器处理
    */
   requestInterceptors: (config) => {
-    console.log("requestInterceptors", config);
-
     return config;
   },
 
@@ -132,9 +130,9 @@ const transform: AxiosTransform = {
    * @description: 响应错误处理
    */
   responseInterceptorsCatch: (error: any) => {
-    console.log('error response');
+    console.log(error, "err");
     const { response, code, message } = error || {};
-    const msg: string = response?.data?.error?.message ?? "";
+    const msg: string = response?.data?.msg ?? "";
     const err: string = error?.toString?.() ?? "";
     try {
       if (code === "ECONNABORTED" && message.indexOf("timeout") !== -1) {

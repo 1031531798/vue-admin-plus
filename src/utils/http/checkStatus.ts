@@ -1,11 +1,8 @@
-import {PageEnum} from "@/enum/pageEnum";
 import { useMessage } from "@/hook/useMessage";
-import { useRouter } from "vue-router";
 
 
 export function checkStatus(status: number, msg: string): void {
     const {message} = useMessage()
-    const router = useRouter()
     const error = console.log
     switch (status) {
         case 101:
@@ -20,7 +17,6 @@ export function checkStatus(status: number, msg: string): void {
 
         case 401:
             error('error http code 401');
-            router.push(PageEnum.BASE_LOGIN);
             break;
         case 403:
             error('error http code 403');
@@ -34,7 +30,6 @@ export function checkStatus(status: number, msg: string): void {
             message('页面出了点小差 请稍后再试', {
                 type: 'error'
             })
-            router.push(PageEnum.BASE_HOME);
             break;
         case 405:
             error('error http code 405');
@@ -46,7 +41,7 @@ export function checkStatus(status: number, msg: string): void {
             error('error http code 408');
             break;
         case 429:
-            error(msg);
+            message(msg, {type: 'error'})
             break;
         case 500:
             error('error http code 500');

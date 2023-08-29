@@ -3,7 +3,9 @@ import { isObject } from "@/utils/is";
 export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
   let key: string;
   for (key in target) {
-    src[key] = isObject(src[key]) ? deepMerge(src[key], target[key]) : (src[key] = target[key]);
+    src[key] = isObject(src[key])
+      ? deepMerge(src[key], target[key])
+      : (src[key] = target[key]);
   }
   return src;
 }
@@ -15,12 +17,14 @@ export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
  * @returns {string}
  */
 export function setObjToUrlParams(baseUrl: string, obj: any): string {
-  let parameters = '';
+  let parameters = "";
   for (const key in obj) {
-    parameters += key + '=' + encodeURIComponent(obj[key]) + '&';
+    parameters += key + "=" + encodeURIComponent(obj[key]) + "&";
   }
-  parameters = parameters.replace(/&$/, '');
-  return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters;
+  parameters = parameters.replace(/&$/, "");
+  return /\?$/.test(baseUrl)
+    ? baseUrl + parameters
+    : baseUrl.replace(/\/?$/, "?") + parameters;
 }
 
 /**
@@ -34,15 +38,15 @@ export function dateFormat(strDate: any, strFormat?: any) {
     return;
   }
   if (!strFormat) {
-    strFormat = 'yyyy-MM-dd';
+    strFormat = "yyyy-MM-dd";
   }
   switch (typeof strDate) {
-    case 'string':
-      strDate = new Date(strDate.replace(/-/, '/'));
-      break;
-    case 'number':
-      strDate = new Date(strDate);
-      break;
+  case "string":
+    strDate = new Date(strDate.replace(/-/, "/"));
+    break;
+  case "number":
+    strDate = new Date(strDate);
+    break;
   }
   if (strDate instanceof Date) {
     const dict: any = {
@@ -52,11 +56,11 @@ export function dateFormat(strDate: any, strFormat?: any) {
       H: strDate.getHours(),
       m: strDate.getMinutes(),
       s: strDate.getSeconds(),
-      MM: ('' + (strDate.getMonth() + 101)).substring(1),
-      dd: ('' + (strDate.getDate() + 100)).substring(1),
-      HH: ('' + (strDate.getHours() + 100)).substring(1),
-      mm: ('' + (strDate.getMinutes() + 100)).substring(1),
-      ss: ('' + (strDate.getSeconds() + 100)).substring(1),
+      MM: ("" + (strDate.getMonth() + 101)).substring(1),
+      dd: ("" + (strDate.getDate() + 100)).substring(1),
+      HH: ("" + (strDate.getHours() + 100)).substring(1),
+      mm: ("" + (strDate.getMinutes() + 100)).substring(1),
+      ss: ("" + (strDate.getSeconds() + 100)).substring(1),
     };
     return strFormat.replace(/(yyyy|MM?|dd?|HH?|mm?|ss?)/g, function () {
       return dict[arguments[0]];
@@ -72,13 +76,13 @@ export function blobToDataURI(blob: Blob, callback: Function) {
     if (e?.target?.result) {
       callback(e.target.result);
     }
-  }
+  };
 }
 
 /**
  * 生成随机len位数字
  */
-export function randomLenNum(len: number = 10, date: boolean = false) {
+export function randomLenNum(len = 10, date = false) {
   let random = "";
   random = Math.ceil(Math.random() * 100000000000000)
     .toString()
@@ -87,3 +91,12 @@ export function randomLenNum(len: number = 10, date: boolean = false) {
   return random;
 }
 
+// 获取数据类型
+export function getValueType (value: Recordable | undefined) {
+  return typeof value
+}
+
+// 驼峰风格转为下划线风格
+export function camelToUnderscore(str: string) {
+  return str.replace(/[A-Z]/g, match => '_' + match.toLowerCase());
+}

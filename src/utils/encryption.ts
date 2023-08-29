@@ -30,12 +30,13 @@ export class AesEncryption {
 
   // AES 加密
   encryptByAES(cipherText: string, isBase64: boolean = false) {
-    return btoa(AES.encrypt(cipherText, this.iv || "", this.getOptions).toString());
+    const value = AES.encrypt(cipherText, this.iv || "", this.getOptions).toString()
+    return isBase64 ? btoa(value) : value;
   }
 
   // AES 解密
   decryptByAES(cipherText: string, isBase64: boolean = false) {
-    const decrypt =  AES.decrypt(atob(cipherText), this.iv || "", this.getOptions)
+    const decrypt =  AES.decrypt(isBase64 ? atob(cipherText) : cipherText, this.iv || "", this.getOptions)
     return CryptoJS.enc.Utf8.stringify(decrypt).toString();
   }
 }

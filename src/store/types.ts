@@ -3,6 +3,7 @@ import { SystemConfig } from "@/config/types";
 import { TabsItemProps } from "@/layout/types";
 import { MenuDataItem } from "@/layout/component/aside/menuData";
 import { LayoutModeTypeEnum } from "@/enum/settingsEnum";
+import {DictItem} from "@/types/dict";
 
 export type SettingType = {
   systemConfig: SystemConfig;
@@ -23,6 +24,9 @@ export type cacheType = {
 
 export type UserStoreType = {
   userInfo: Partial<UserInfoProp>;
+  dictAll: {
+    [key: string]: DictItem[];
+  },
   token: string;
 };
 // 用户信息类型

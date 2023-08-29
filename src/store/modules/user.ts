@@ -12,6 +12,7 @@ export const useUserStore = defineStore({
   id: "user-store",
   state: ():UserStoreType  => ({
     userInfo: {},
+    dictAll: {},
     token: getStorage({key: TOKEN_KEY}) || ""
   }),
   getters: {
